@@ -1,0 +1,312 @@
+@charset "UTF-8";
+/*---Reset---*/
+body, h1, h2, h3, h4, h5, h6, p, address,
+ul, ol, li, dl, dt, dd, img, form, table, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 100%;
+	text-align: left;
+	list-style-type: none;
+	border-collapse: collapse;
+}
+* {
+	/* -webkit-box-sizing: border-box; */
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+body {
+    font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+}
+a {
+    text-decoration: none;
+}
+header nav .signclick {
+    display: none;
+}
+header nav .sideMenu {
+    display: none;
+}
+header.sabu {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    background-image: none;
+}
+header nav {
+    position: relative;
+    top: 0;
+    color: white;
+    background-color: transparent;
+    margin: auto;
+    width: 100%;
+    padding: 0 5%;
+    display: flex;
+    padding-top: 15px;
+    flex-wrap: wrap;
+}
+header.sabu nav.cafe_menu {
+    position: relative;
+}
+header nav .logo {
+    flex: 25%;
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+}
+header nav a {
+    color: white;
+}
+.cafe_menu {
+    background-color: rgba(0,0,0,0.8);
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    transition: all .5s ease;
+}
+header nav .logo img {
+    vertical-align: middle;
+}
+header nav .top_menu {
+    flex: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: 50px;
+}
+header nav .top_menu .menu_first {
+    padding: 0 25px;
+    cursor: pointer;
+}
+header nav .sign {
+    flex: 25%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    line-height: 50px;
+}
+section {
+    margin: 40px 0;
+    padding: 0 5%;
+}
+.inquiry_box {
+    width: 70%;
+    margin: 5% auto;
+    border-radius: 16px;
+    border: 1px solid #ccc;
+}
+.inquiry_box .required {
+    color: red;
+}
+.inquiry_box h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ccc;
+}
+.inquiry_box form {
+    margin: 2%;
+}
+.inquiry_box h3 {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eaeaea));
+    padding: 1%;
+    margin: 1% 0;
+}
+.inquiry_box p {
+    font-weight: normal;
+}
+.inquiry_box dl {
+    margin: 2% 0;
+}
+.inquiry_box dd {
+    padding: 0.5% 0 1%;
+    font-size: 1.2rem;
+}
+.inquiry_box input {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+}
+.inquiry_box textarea {
+    resize: none;
+    width: 100%;
+    height: 33vh;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+}
+.display-text pre {
+    font-size: 1.2rem;
+}
+.inquiry_box button {
+    color: white;
+    background-color: rgb(215, 4, 102);
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.inquiry_box .answer {
+    padding: 1%;
+}
+.inquiry_box .answer dt {
+    margin-top: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+.inquiry_box .answer dd {
+    padding: 1%;
+}
+.inquiry_box .answer dd.next {
+    padding: 1% 0;
+    display: flex;
+    justify-content: space-between;
+}
+.inquiry_box .answer dd.next button {
+    margin-right: 10px;
+}
+.inquiry_box .answer dd.next a {
+    width: 100%;
+    line-height: 40px;
+    margin-left: 10px;
+    border-radius: 8px;
+    text-align: center;
+    background-color: transparent;
+    cursor: pointer;
+    color: #066;
+    border: 2px solid #066;
+}
+.last_page {
+    padding: 3%;
+}
+.last_page p {
+    font-weight: normal;
+}
+.last_page a {
+    display: block;
+    margin-top: 10px;
+    text-decoration: underline;
+}
+footer {
+    border-top: 1px solid #ddd;
+    background-color: #f7f7f7;
+    padding: 4% 0;
+}
+footer .out {
+    width: 90%;
+    margin: auto;
+    font-size: 13px;
+}
+footer .list h2 {
+    font-weight: bold;
+}
+footer .list li {
+    margin: 1rem 0;
+}
+footer .list a {
+    color: black;
+}
+footer .supplement {
+        padding-top: 2%;
+        color: #333;
+        border-top: 1px solid #ccc;
+}
+
+@media screen and (max-width: 896px) {
+
+    header nav .top_menu {
+        display: none;
+    }
+    header nav .sideMenu {
+        box-shadow: 0 10px 25px 0 rgba(100, 100, 100, 0.5);
+    }
+    header nav .side_first a {
+        color: black;
+        padding: 0 1rem;
+    }
+    header nav .singnin {
+        display: none;
+    }
+    header nav .signclick {
+        display: block;
+    }
+    header nav .sideMenu {
+        display: none;
+    }
+    header nav .side_first {
+        display: block;
+    }
+    header nav .side img {
+        width: 50px;
+    }
+    header nav .signin {
+        display: none;
+    }
+    .guide {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .outside {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .goto_title {
+        top: 25;
+        left: 25;
+    }
+    .goto_titleh3 {
+        font-size: 32px;
+    }
+    .goto_title p {
+        font-size: 1.2rem;
+    }
+    
+    #signin_box {
+        width: 60%;
+    }
+    .inquiry_box {
+        width: 90%;
+    }
+    
+    }
+    
+    @media screen and (max-width: 700px) {
+    
+    header h1.concept {
+        font-size: 48px;
+    }
+    .goto_title {
+        position: static;
+    }
+    footer .list h2 {
+        border-bottom: 1px solid #ccc;
+    }
+    
+    }
+    
+    @media screen and (max-width: 480px) {
+    
+    header h1.concept {
+        font-size: 32px;
+    }
+    .cafe_host {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #signin_box {
+        width: 80%;
+    }
+    .inquiry_box {
+        width: 98%;
+    }
+    
+    }
