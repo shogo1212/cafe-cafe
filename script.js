@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+
 // スクロールイベントを監視
 window.addEventListener('scroll', function() {
     // 現在のスクロール位置を取得

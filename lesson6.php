@@ -32,7 +32,7 @@
                     <a href="#cafe">体験</a>
                 </div>
                 <div class="inquiry">
-                    <a href="contact.php">お問い合わせ</a>
+                    <a href="contact.php" id="contactLink">お問い合わせ</a>
                 </div>
             </div>
             <div class="sign"><!--サインイン-->
@@ -50,7 +50,7 @@
                         <a href="#cafe">体験</a>
                     </div>
                     <div class="side_first">
-                        <a href="contact.php">お問い合わせ</a>
+                        <a href="contact.php" id="contactLink">お問い合わせ</a>
                     </div>
                 </div>
             </div>

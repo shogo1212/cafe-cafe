@@ -317,5 +317,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </footer>
+    <script type="text/javascript">
+        // ページの全コンテンツが読み込まれた後にアラートを表示
+        window.onload = function() {
+            setTimeout(function() {
+                alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');
+            }, 0); // setTimeoutに0ミリ秒を指定
+        };
+    </script>
 </body>
 </html>
