@@ -46,7 +46,7 @@ header {
     min-height: 680px;
     background-size: cover;
     background-position: center;
-    background-image: url(./cafe/img/eyecatch.jpg);
+    background-image: url(../cafe/img/eyecatch.jpg);
 }
 header nav .signclick {
     display: none;

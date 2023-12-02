@@ -7,9 +7,9 @@ $_SESSION['form_step'] = 'complete';
 <head>
 <meta charset='utf-8'>
 <title>cafe-cafe</title>
-<link rel="stylesheet" type="text/css" href="styles.css">
-<link rel="stylesheet" href="style.css">
-<script src="script.js" type="module"></script>
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/script.js" type="module"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -94,7 +94,7 @@ $_SESSION['form_step'] = 'complete';
                 <p>お問い合わせ頂きありがとうございます。</p>
                 <p>送信頂いた件につきましては、当社より折り返しご連絡を差し上げます。</p>
                 <p>なお、ご連絡までに、お時間を頂く場合もございますので予めご了承ください。</p>
-                <a href="lesson6.php">トップへ戻る</a>
+                <a href="index.php">トップへ戻る</a>
             </div>
             <form action="confirm.php" method="post">
                 <form action=""></form>
