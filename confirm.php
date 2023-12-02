@@ -1,6 +1,11 @@
 <?php
-    session_start(); 
-?>                            
+session_start();
+if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
+    header('Location: contact.php');
+    exit();
+}
+?>
+                          
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +26,10 @@
             </div>
             <div class="top_menu">
                 <div class="menu_first">
-                    <a href="lesson6.php#box">はじめに</a>
+                    <a href="index.php#box">はじめに</a>
                 </div>
                 <div class="menu_first">
-                    <a href="lesson6.php#cafe">体験</a>
+                    <a href="index.php#cafe">体験</a>
                 </div>
                 <div class="inquiry">
                     <a href="contact.php">お問い合わせ</a>
@@ -39,10 +44,10 @@
                 <div class="side sideMenu">
                     <div class="side first" id="signinbutton">サインイン</div>
                     <div class="side side_first">
-                        <a href="lesson6.php#box">はじめに</a>
+                        <a href="index.php#box">はじめに</a>
                     </div>
                     <div class="side side_first">
-                        <a href="lesson6.php#cafe">体験</a>
+                        <a href="index.php#cafe">体験</a>
                     </div>
                     <div class="side_first">
                         <a href="contact.php">お問い合わせ</a>
@@ -144,7 +149,8 @@
                                 echo htmlspecialchars($body, ENT_QUOTES, 'UTF-8');
                                 if (empty($body)) {
                                     echo "氏名が入力されていません。";
-                                }?>
+                                }
+                                ?>
                         </pre>
 
                         </div>

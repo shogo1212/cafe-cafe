@@ -175,7 +175,7 @@
 
     <main>
         <section class="choose">
-            <h2>好きなおケーションを選ぼう</h2>
+            <h2>好きなロケーションを選ぼう</h2>
             <div class="outside"><!--外-->
                 <div class="box" id="box">
                     <div class="box_nav">

@@ -1,5 +1,6 @@
 <?php
 session_start(); // セッションを開始
+$_SESSION['form_step'] = 'input';
 // エラーメッセージ用の変数を初期化
 $errorMessages = [];
 
@@ -40,9 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['tel'] = $tel;
     $_SESSION['email'] = $email;
     $_SESSION['body'] = $body;
+    $_SESSION['form_step'] = 'confirm';
     header('Location: confirm.php');
     exit();
 }
+$_SESSION['form_started'] = false;
+$_SESSION['form_submitted'] = true;
+header('Location: confirm.php');
+exit();
 }
 ?>
 <!DOCTYPE html>
@@ -71,10 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="top_menu">
                 <div class="menu_first">
-                    <a href="lesson6.php#box">はじめに</a>
+                    <a href="index.php#box">はじめに</a>
                 </div>
                 <div class="menu_first">
-                    <a href="lesson6.php#cafe">体験</a>
+                    <a href="index.php#cafe">体験</a>
                 </div>
                 <div class="inquiry">
                     <a href="contact.php">お問い合わせ</a>
@@ -89,10 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="side sideMenu">
                     <div class="side first" id="signinbutton">サインイン</div>
                     <div class="side side_first">
-                        <a href="lesson6.php#box">はじめに</a>
+                        <a href="index.php#box">はじめに</a>
                     </div>
                     <div class="side side_first">
-                        <a href="lesson6.php#cafe">体験</a>
+                        <a href="index.php#cafe">体験</a>
                     </div>
                     <div class="side_first">
                         <a href="contact.php">お問い合わせ</a>

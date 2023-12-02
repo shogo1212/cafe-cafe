@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION['form_step'] = 'complete';
+?>      
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,10 +22,10 @@
             </div>
             <div class="top_menu">
                 <div class="menu_first">
-                    <a href="lesson6.php#box">はじめに</a>
+                    <a href="index.php#box">はじめに</a>
                 </div>
                 <div class="menu_first">
-                    <a href="lesson6.php#cafe">体験</a>
+                    <a href="index.php#cafe">体験</a>
                 </div>
                 <div class="inquiry">
                     <a href="contact.php">お問い合わせ</a>
@@ -36,10 +40,10 @@
                 <div class="side sideMenu">
                     <div class="side first" id="signinbutton">サインイン</div>
                     <div class="side side_first">
-                        <a href="lesson6.php#box">はじめに</a>
+                        <a href="index.php#box">はじめに</a>
                     </div>
                     <div class="side side_first">
-                        <a href="lesson6.php#cafe">体験</a>
+                        <a href="index.php#cafe">体験</a>
                     </div>
                     <div class="side_first">
                         <a href="contact.php">お問い合わせ</a>
