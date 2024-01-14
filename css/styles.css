@@ -146,9 +146,11 @@ section {
     border: 1px solid #aaa;
 }
 .display-text pre {
+    width: 100%;
     font-size: 1.2rem;
+    white-space: pre-wrap;
 }
-.inquiry_box button {
+.inquiry_box .next .front input {
     color: white;
     background-color: rgb(215, 4, 102);
     width: 100%;
@@ -168,18 +170,24 @@ section {
 .inquiry_box .answer dd {
     padding: 1%;
 }
-.inquiry_box .answer dd.next {
+.inquiry_box .next {
     padding: 1% 0;
     display: flex;
     justify-content: space-between;
 }
-.inquiry_box .answer dd.next button {
+.inquiry_box .next .front {
     margin-right: 10px;
 }
-.inquiry_box .answer dd.next a {
+.inquiry_box .next .front {
     width: 100%;
-    line-height: 40px;
-    margin-left: 10px;
+
+}
+.inquiry_box .next .back {
+    width: 100%;
+
+}
+.inquiry_box .next .back input {
+    width: 100%;
     border-radius: 8px;
     text-align: center;
     background-color: transparent;

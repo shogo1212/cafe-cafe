@@ -145,12 +145,3 @@ document.addEventListener('DOMContentLoaded', function() {
         sideMenu.style.display = "none";
     });
 });
-
-
-
-
-
-
-
-
-        

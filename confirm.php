@@ -1,6 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
+
+// リファラURLを取得
+$referrer = $_SERVER['HTTP_REFERER'] ?? '';
+
+// リファラURLに基づいて条件をチェック
+if (!str_contains($referrer, 'contact.php')) {
+    // リダイレクト
     header('Location: contact.php');
     exit();
 }
@@ -20,7 +26,7 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
     <header class="sabu">
         <nav class="cafe_menu">
             <div class="logo">
-                <a>
+                <a href="index.php">
                     <img src="cafe/img/logo.png" alt="cafe">
                 </a>
             </div>
@@ -104,8 +110,6 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
                             if (isset($_SESSION['name'])) {
                                 $name = $_SESSION['name'];
                                 echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-                            } elseif (empty($name)) {
-                                        echo "氏名が入力されていません。";
                             }
                             ?>
                         </dd>
@@ -115,8 +119,6 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
                             if (isset($_SESSION['kana'])) {
                                 $kana = $_SESSION['kana'];
                                 echo htmlspecialchars($kana, ENT_QUOTES, 'UTF-8');
-                            } elseif (empty($kana)) {
-                                echo "氏名が入力されていません。";
                             }
                         ?>
                         </dd>
@@ -126,8 +128,6 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
                             if (isset($_SESSION['tel'])) {
                                 $tel = $_SESSION['tel'];
                                 echo htmlspecialchars($tel, ENT_QUOTES, 'UTF-8');
-                            } elseif (empty($tel)) {
-                                echo "氏名が入力されていません。";
                             }
                         ?>
                         </dd>
@@ -137,8 +137,6 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
                              if (isset($_SESSION['email'])) {
                                 $email = $_SESSION['email'];
                                 echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
-                            } elseif (empty($email)) {
-                                echo "氏名が入力されていません。";
                             }
                         ?>
                         </dd>
@@ -147,19 +145,25 @@ if (!isset($_SESSION['form_step']) || $_SESSION['form_step'] !== 'confirm') {
                         <pre><?php
                                 $body = isset($_SESSION['body']) ? trim($_SESSION['body']) : '';
                                 echo htmlspecialchars($body, ENT_QUOTES, 'UTF-8');
-                                if (empty($body)) {
-                                    echo "氏名が入力されていません。";
-                                }
                                 ?>
                         </pre>
 
                         </div>
-                        <dd class="next">
-                            <button type="submit">送信</button>
-                            <a href="#" onclick="history.back(); return false;">戻る</a>
-                        </dd>
+                        
                     </dl>
                 </form>
+                <div class="next">
+                    <div class="front">
+                        <form action="complete.php" method="post">
+                                    <input type="submit" name="front" value="送信">
+                        </form>
+                    </div>
+                    <div class="back">
+                        <form action="contact.php">
+                                    <input type="submit" name="back" value="戻る">
+                        </form>
+                    </div>
+                </div>
             </div>
     </section>
 

@@ -1,10 +1,18 @@
 <?php
-session_start(); // セッションを開始
-$_SESSION['form_step'] = 'input';
+session_start();
+// リファラURLを取得
+$referrer = $_SERVER['HTTP_REFERER'] ?? '';
+
+// リファラURLに基づいて条件をチェック
+if (!str_contains($referrer, 'contact.php') && !str_contains($referrer, 'confirm.php')) {
+    // セッション変数をクリアする
+    unset($_SESSION['formData']);
+}
 // エラーメッセージ用の変数を初期化
 $errorMessages = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION['formData'] = $_POST;
     // 'name'フィールドからデータを取得
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
     $kana = isset($_POST['kana']) ? trim($_POST['kana']) : '';
@@ -17,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessages['name'] = '氏名は必須入力です。名前は10文字以内で入力してください。';
     } 
     //フリガナチェック
-    $kana = isset($_POST['kana']) ? trim($_POST['kana']) : '';
     if (empty($kana) || mb_strlen($kana) > 10) {
         $errorMessages['kana'] = 'フリガナは必須入力です。フリガナは10文字以内で入力してください。';
-    } //電話番号チェック
+    } 
+    //電話番号チェック
     if (empty($tel) || !preg_match('/^[0-9]+$/', $tel)) {
         $errorMessages['tel'] = '電話番号は0-9の数字のみで入力してください。';
     } 
@@ -33,22 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
     
 
-   // エラーがなければ次の処理へ進む（データベースへの保存など）
+   // エラーがなければ次の処理へ進む
     if (empty($errorMessages)) {
-    // 次のページへリダイレクトする
     $_SESSION['name'] = $name;
     $_SESSION['kana'] = $kana;
     $_SESSION['tel'] = $tel;
     $_SESSION['email'] = $email;
     $_SESSION['body'] = $body;
     $_SESSION['form_step'] = 'confirm';
+        // 次のページへリダイレクトする
     header('Location: confirm.php');
     exit();
 }
-$_SESSION['form_started'] = false;
-$_SESSION['form_submitted'] = true;
-header('Location: confirm.php');
-exit();
 }
 ?>
 <!DOCTYPE html>
@@ -71,7 +75,7 @@ exit();
     <header class="sabu">
         <nav class="cafe_menu">
             <div class="logo">
-                <a>
+                <a href="index.php">
                     <img src="cafe/img/logo.png" alt="cafe">
                 </a>
             </div>
@@ -111,7 +115,7 @@ exit();
         <div id="loginModal" class="modal">
             <div class="login" id="login">
                 <h2>ログイン</h2>
-                <form method="post" action>
+                <form method="post" action="" id="contactForm">
                     <dl>
                     <dd><input type="email" name="user-email" placeholder="メールアドレス"></dd>
                         <dd><input type="password" name="pass" placeholder="パスワード"></dd>
@@ -145,8 +149,7 @@ exit();
     <section>
         <div class="inquiry_box">
             <h2>お問い合わせ</h2>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>">
-            
+            <form method="post" action="" id="contact">
                 <h3>下記の項目をご記入の上送信ボタンを押してください</h3>
                 <p>送信頂いた件につきましては、当社より折り返しご連絡を差し上げます。</p>
                 <p>なお、ご連絡までに、お時間を頂く場合もございますので予めご了承ください。</p>
@@ -166,7 +169,7 @@ exit();
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="name" id="name" placeholder="山田太郎" autocomplete="username">
+                        <input type="text" name="name" id="name" placeholder="山田太郎" value="<?php echo isset($_SESSION['formData']['name']) ? htmlspecialchars($_SESSION['formData']['name']) : ''; ?>">
                     </dd>
                     <dt>
                         <label for="kana">フリガナ</label>
@@ -179,11 +182,10 @@ exit();
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="kana" id="kana" placeholder="ヤマダタロウ" autocomplete="username">
+                        <input type="text" name="kana" id="kana" placeholder="ヤマダタロウ" value="<?php echo isset($_SESSION['formData']['kana']) ? htmlspecialchars($_SESSION['formData']['kana']) : ''; ?>">
                     </dd>
                     <dt>
                         <label for="tel">電話番号</label>
-                        <span class="required">*</span>
                     </dt>
                     <dt>
                         <!-- エラーメッセージを表示 -->
@@ -192,7 +194,7 @@ exit();
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="tel" id="tel" placeholder="09012345678" autocomplete="username">
+                        <input type="text" name="tel" id="tel" placeholder="09012345678" value="<?php echo isset($_SESSION['formData']['tel']) ? htmlspecialchars($_SESSION['formData']['tel']) : ''; ?>">
                     </dd>
                     <dt>
                         <label for="email">メールアドレス</label>
@@ -205,7 +207,7 @@ exit();
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="email" id="email" placeholder="test@test.co.jp" autocomplete="username">
+                        <input type="text" name="email" id="email" placeholder="test@test.co.jp" value="<?php echo isset($_SESSION['formData']['email']) ? htmlspecialchars($_SESSION['formData']['email']) : ''; ?>">
                     </dd>
                 </dl>
                 <h3>
@@ -218,14 +220,89 @@ exit();
                        <div class="error"><?php echo $errorMessages["body"]; ?></div>
                 <?php endif; ?>
                 <dl>
-                    <dd>
-                        <textarea name="body" id="body"></textarea>
-                    </dd>
-                    <dd>
-                        <button type="submit">送信</button>
-                    </dd>
+                <dd>
+                    <textarea name="body" id="body"><?php echo isset($_SESSION['formData']['body']) ? htmlspecialchars($_SESSION['formData']['body']) : ''; ?></textarea>
+                </dd>
+
+                <div class="next">
+                    <div class="front">
+                        <form action="complete.php" method="post" class="next">
+                                    <input type="submit" name="front" value="送信">
+                        </form>
+                    </div>
+                </div>
                 </dl>
             </form>
+            
+            <script>
+                document.getElementById('contact').addEventListener('submit', function(event) {
+                    let name = document.getElementById('name').value;
+                    let kana = document.getElementById('kana').value;
+                    let tel = document.getElementById('tel').value;
+                    let email = document.getElementById('email').value;
+                    let body = document.getElementById('body').value;
+                    
+                    if (name === "") {
+                        event.preventDefault(); // フォームの送信を阻止
+                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    }
+                    if (kana === "") {
+                        event.preventDefault(); // フォームの送信を阻止
+                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    }
+                    if (tel === "") {
+                        event.preventDefault(); // フォームの送信を阻止
+                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    }
+                    if (email === "") {
+                        event.preventDefault(); // フォームの送信を阻止
+                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    }
+                    if (body === "") {
+                        event.preventDefault(); // フォームの送信を阻止
+                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    }
+                    
+                    if (!name || name.length > 10) {
+                            document.querySelector('.error-name').style.display = 'block'; // 個別のエラー要素
+                            isValid = false;
+                        } else {
+                            document.querySelector('.error-name').style.display = 'none';
+                        }
+
+                        if (!kana || kana.length > 10) {
+                            document.querySelector('.error-kana').style.display = 'block';
+                            isValid = false;
+                        } else {
+                            document.querySelector('.error-kana').style.display = 'none';
+                        }
+
+                        const telPattern = /^[0-9]+$/;
+                        if (!tel || !telPattern.test(tel)) {
+                            document.querySelector('.error-tel').style.display = 'block';
+                            isValid = false;
+                        } else {
+                            document.querySelector('.error-tel').style.display = 'none';
+                        }
+
+                        const emailPattern = FILTER_VALIDATE_EMAIL;
+                        if (!email || !emailPattern.test(email)) {
+                            document.querySelector('.error-email').style.display = 'block';
+                            isValid = false;
+                        } else {
+                            document.querySelector('.error-email').style.display = 'none';
+                        }
+
+                        if (!body) {
+                            document.querySelector('.error-body').style.display = 'block';
+                            isValid = false;
+                        } else {
+                            document.querySelector('.error-body').style.display = 'none';
+                        }
+
+
+                });
+            </script>
         </div>
     </section>
     <footer>
@@ -323,13 +400,5 @@ exit();
             </div>
         </div>
     </footer>
-    <script type="text/javascript">
-        // ページの全コンテンツが読み込まれた後にアラートを表示
-        window.onload = function() {
-            setTimeout(function() {
-                alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');
-            }, 0); // setTimeoutに0ミリ秒を指定
-        };
-    </script>
 </body>
 </html>

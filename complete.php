@@ -1,6 +1,20 @@
 <?php
 session_start();
 $_SESSION['form_step'] = 'complete';
+// 全てのセッション変数をクリアする
+session_unset();
+// セッション自体を破棄する
+session_destroy();
+
+// リファラURLを取得
+$referrer = $_SERVER['HTTP_REFERER'] ?? '';
+
+// リファラURLに基づいて条件をチェック
+if (!str_contains($referrer, 'confirm.php')) {
+    // リダイレクト
+    header('Location: contact.php');
+    exit();
+}
 ?>      
 <!DOCTYPE html>
 <html>
@@ -16,7 +30,7 @@ $_SESSION['form_step'] = 'complete';
     <header class="sabu">
         <nav class="cafe_menu">
             <div class="logo">
-                <a>
+                <a href="index.php">
                     <img src="cafe/img/logo.png" alt="cafe">
                 </a>
             </div>
