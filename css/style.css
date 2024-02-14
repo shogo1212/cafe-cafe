@@ -1,0 +1,471 @@
+@charset "UTF-8";
+/*---Reset---*/
+body, h1, h2, h3, h4, h5, h6, p, address,
+ul, ol, li, dl, dt, dd, img, form, table, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 100%;
+	text-align: left;
+	list-style-type: none;
+	border-collapse: collapse;
+}
+* {
+	/* -webkit-box-sizing: border-box; */
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+body {
+    font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+}
+.corona {
+    top: 0;
+    width: 100%;
+    background-color: black;
+    position: relative;
+    padding: 18px;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 5px 5px 5px 680px rgba(180,180,180,0.3);
+}
+.corona a {
+    color: white;
+    text-decoration: underline;
+    
+}
+
+header {
+    position: relative;
+    width: 100%;
+    min-height: 680px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../cafe/img/eyecatch.jpg);
+}
+header nav .signclick {
+    display: none;
+}
+header nav .sideMenu {
+    display: none;
+}
+header h1.concept {
+    width: 90%;
+    margin: auto;
+    position: absolute;
+    top: 250px;
+    left: 5%;
+    color: white;
+    font-size: 64px;
+    line-height: 64px;
+    font-weight: bold;
+}
+header nav {
+    position: relative;
+    top: 0;
+    color: white;
+    background-color: transparent;
+    margin: auto;
+    width: 100%;
+    padding: 0 5%;
+    display: flex;
+    padding-top: 15px;
+    flex-wrap: wrap;
+}
+header nav a {
+    color: white;
+}
+.signclick:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.logo {
+    color: white;
+    font-weight: bold;
+    font-size: 32px;
+    flex: 25%;
+}
+.top_menu {
+    flex: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 50px;
+    justify-content: center;
+}
+header nav .top_menu .menu {
+    padding: 0 25px;
+    cursor: pointer;
+}
+a:hover {
+    color: #aaa;
+}
+header nav .top_menu .inquiry {
+    padding: 0 25px;
+    
+}
+nav.active {
+    background-color: rgba(0,0,0,0.7);
+    z-index: 2;
+    position: fixed;
+    top: 0;
+}
+header nav .first{
+    color: black;
+    padding: 0 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+header nav .sign {
+    flex: 25%;
+    line-height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+header nav .sideMenu {
+	position: fixed;
+	top: 125px;
+	width: 12.5rem;
+	background-color: white;
+	border-radius: 8px;
+}
+.modal {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.login {
+    margin-top: 0px;
+    opacity: 1;
+    z-index: 999;
+    width: 40%;
+    background-color: white;
+    border-radius: 12px;
+    animation-name: slideUp;
+    animation-duration: 0.4s;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%); /* 下から開始 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* 上に移動 */
+    }
+}
+.login h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ccc;
+}
+.login dl {
+    padding: 20px;
+}
+.login dd {
+    padding:  5px 0;
+}
+.login dd input {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+}
+.login dd button {
+    color: white;
+    background-color: rgb(215, 4, 102);
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.login dl .sns {
+    border-top: 1px solid #ccc;
+}
+.login .sns dd button {
+    color: black;
+    background-color: white;
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 2.5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+} 
+.login .sns dd img {
+    width: 1.5rem;
+}
+
+section {
+    margin: 40px 0;
+    padding: 0 5%;
+}
+.guide {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.guide .box {
+    padding: 10px 0;
+}
+.guide .box_nav {
+    display: flex;
+    justify-content: flex-start;
+}
+.guide .photograph {
+    height: 65px;
+    width: 65px;
+}
+.guide .photograph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.city-guide {
+    padding: 5px 15px;
+}
+.city-guide p {
+    font-size: 14px;
+    font-weight: 900;
+}
+main {
+    margin: 80px 0 60px;
+}
+section h2 {
+    font-size: 32px;
+    font-weight: bold;
+}
+section p {
+    font-size: 14px;
+    font-weight: 900;
+}
+.outside .photograph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.outside {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 15px;
+}
+.outside .box {
+    padding: 10px 0;
+}
+.text {
+    font-size: 18px;
+    font-weight: bold;
+}
+.goto {
+    margin-top: 40px;
+    opacity: 0.9;
+    position: relative;
+}
+.goto_title {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    background-color: rgba(255,255,255,0.3);
+    padding: 10px;
+}
+.goto_title h3 {
+    font-size: 42px;
+    font-weight: bold;
+    color: black;
+}
+.goto_title p {
+    font-size: 18px;
+    font-weight: 100;
+    color: black;
+}
+.goto img {
+    width: 100%;
+    border-radius: 16px;
+}
+.experience {
+    background-color: black;
+    color: white;
+    padding: 40px;
+}
+.cafe_experience {
+    margin: 15px auto 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 15px;
+}
+.cafe_experience .photograph img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.cafe_host {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 15px;
+}
+.cafe_host .photograph img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+footer {
+    border-top: 1px solid #ddd;
+    background-color: #f7f7f7;
+    padding: 4% 0;
+}
+footer .out {
+    width: 90%;
+    margin: auto;
+    font-size: 13px;
+}
+footer .Company_nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+footer .list h2 {
+    font-weight: bold;
+}
+footer .list li {
+    margin: 1rem 0;
+}
+footer .list a {
+    color: black;
+}
+footer .supplement {
+        padding-top: 2%;
+        color: #333;
+        border-top: 1px solid #ccc;
+}
+
+#yourElementId {
+    transition: all 0.5s ease; /* トランジションで滑らかな表示・非表示を実現 */
+}
+
+#yourElementId.top {
+    /* ここに表示時のスタイルを設定 */
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    line-height: 3rem;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    background-color: black;
+    padding: 0 10px;
+    transition-delay: 0.38s;
+}
+
+@media screen and (max-width: 896px) {
+
+header nav .top_menu {
+	display: none;
+}
+header nav .sideMenu {
+	box-shadow: 0 10px 25px 0 rgba(100, 100, 100, 0.5);
+}
+header nav .side_first a {
+    color: black;
+    padding: 0 1rem;
+}
+header nav .singnin {
+	display: none;
+}
+header nav .signclick {
+	display: block;
+}
+header nav .sideMenu {
+	display: none;
+}
+header nav .side_first {
+	display: block;
+}
+header nav .side img {
+	width: 50px;
+}
+header nav .signin {
+	display: none;
+}
+.guide {
+	grid-template-columns: repeat(2, 1fr);
+}
+.outside {
+	grid-template-columns: repeat(2, 1fr);
+}
+.goto_title {
+	top: 25;
+	left: 25;
+}
+.goto_titleh3 {
+	font-size: 32px;
+}
+.goto_title p {
+	font-size: 1.2rem;
+}
+
+#signin_box {
+	width: 60%;
+}
+.contact_box {
+	width: 90%;
+}
+
+}
+
+@media screen and (max-width: 700px) {
+
+header h1.concept {
+	font-size: 48px;
+}
+.goto_title {
+	position: static;
+}
+footer .Company_nav {
+	display: block;
+}
+footer .list h2 {
+	border-bottom: 1px solid #ccc;
+}
+
+}
+
+@media screen and (max-width: 480px) {
+
+header h1.concept {
+	font-size: 32px;
+}
+#signin_box {
+	width: 80%;
+}
+.inquiry_box {
+	width: 98%;
+}
+
+}
+
+
+
