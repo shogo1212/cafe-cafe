@@ -1,99 +1,79 @@
 <?php
-    session_start();
-    // リファラURLを取得
-    $referrer = $_SERVER['HTTP_REFERER'] ?? '';
+session_start();
 
-    // リファラURLに基づいて条件をチェック
-    if (!str_contains($referrer, 'contact.php') && !str_contains($referrer, 'confirm.php')) {
-        // セッション変数をクリアする
-        unset($_SESSION['formData']);
-    }
-    // エラーメッセージ用の変数を初期化
-    $errorMessages = [];
+// リファラURLを取得
+$referrer = $_SERVER['HTTP_REFERER'] ?? '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST['action'] != 'delete')) {
-    $_SESSION['formData'] = $_POST;
-    // 'name'フィールドからデータを取得(
-    $id = isset($_POST['id']) ? trim($_POST['id']) : '';
-    $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-    $kana = isset($_POST['kana']) ? trim($_POST['kana']) : '';
-    $tel = isset($_POST['tel']) ? trim($_POST['tel']) : '';
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-    $body = isset($_POST['body']) ? trim($_POST['body']) : '';
-
-    //氏名チェック
-    if (empty($name) || mb_strlen($name) > 10) {
-        $errorMessages['name'] = '氏名は必須入力です。名前は10文字以内で入力してください。';
-    } 
-    //フリガナチェック
-    if (empty($kana) || mb_strlen($kana) > 10) {
-        $errorMessages['kana'] = 'フリガナは必須入力です。フリガナは10文字以内で入力してください。';
-    } 
-    //電話番号チェック
-    if (empty($tel) || !preg_match('/^[0-9]+$/', $tel)) {
-        $errorMessages['tel'] = '電話番号は0-9の数字のみで入力してください。';
-    } 
-    // メールアドレスチェック
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errorMessages['email'] = 'メールアドレスは正しく入力してください。';
-    } 
-    if (empty($body)) {
-        $errorMessages['body'] = 'お問い合わせ内容は必須入力です。';
-    } 
-    
-
-   // エラーがなければ次の処理へ進む
-    if (empty($errorMessages)) {
-    $_SESSION['name'] = $name;
-    $_SESSION['kana'] = $kana;
-    $_SESSION['tel'] = $tel;
-    $_SESSION['email'] = $email;
-    $_SESSION['body'] = $body;
-    $_SESSION['form_step'] = 'confirm';
-    // 次のページへリダイレクトする
-    header('Location: confirm.php');
+// リファラURLに基づいて条件をチェック
+if (!str_contains($referrer, 'contact.php')) {
+    // リダイレクト
+    header('Location: contact.php');
     exit();
 }
-}
-    // バッファリング開始
-    ob_start();
-    require 'dbconnect.php';
 
-    // すべてのレコードを取得
-    $sql = "SELECT id, name, kana, tel, email, body FROM contacts ORDER BY id DESC";
+require 'dbconnect.php';
+
+    //データベースから該当するレコードを取得
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    $sql = "SELECT * FROM contacts WHERE id = :id";
     $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT); 
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //データ取得
-    $id = $_POST['id'];
-    $name = $_POST['name'];
-    $kana = $_POST['kana'];
-    $tel = $_POST['tel'];
-    $email = $_POST['email'];
-    $body = $_POST['body'];
-
-    $sql = "UPDATE  contacts SET name = :name, kana = :kana, tel = :tel, email = :email, body = :body WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-
-    // バインド変数に値をセット
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $stmt->bindValue(':name', $name, PDO::PARAM_STR);
-    $stmt->bindValue(':kana', $kana, PDO::PARAM_STR);
-    $stmt->bindValue(':tel', $tel, PDO::PARAM_INT);
-    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-    $stmt->bindValue(':body', $body, PDO::PARAM_STR);
-
-    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-    // 全ての処理が終わった後でデータベース接続を閉じる
-    $pdo = null;
+// 全ての処理が終わった後でデータベース接続を閉じる
+$pdo = null;
 
-    // バッファリング終了
-    ob_end_flush();
 
+// エラーメッセージ用の変数を初期化
+$errorMessages = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST['action'] != 'delete')) {
+$_SESSION['formData'] = $_POST;
+// 'name'フィールドからデータを取得
+$name = isset($_POST['name']) ? trim($_POST['name']) : '';
+$kana = isset($_POST['kana']) ? trim($_POST['kana']) : '';
+$tel = isset($_POST['tel']) ? trim($_POST['tel']) : '';
+$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+$body = isset($_POST['body']) ? trim($_POST['body']) : '';
+
+//氏名チェック
+if (empty($name) || mb_strlen($name) > 10) {
+    $errorMessages['name'] = '氏名は必須入力です。名前は10文字以内で入力してください。';
+} 
+//フリガナチェック
+if (empty($kana) || mb_strlen($kana) > 10) {
+    $errorMessages['kana'] = 'フリガナは必須入力です。フリガナは10文字以内で入力してください。';
+} 
+//電話番号チェック
+if (empty($tel) || !preg_match('/^[0-9]+$/', $tel)) {
+    $errorMessages['tel'] = '電話番号は0-9の数字のみで入力してください。';
+} 
+// メールアドレスチェック
+if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errorMessages['email'] = 'メールアドレスは正しく入力してください。';
+} 
+if (empty($body)) {
+    $errorMessages['body'] = 'お問い合わせ内容は必須入力です。';
+} 
+
+
+// エラーがなければ次の処理へ進む
+if (empty($errorMessages)) {
+$_SESSION['name'] = $name;
+$_SESSION['kana'] = $kana;
+$_SESSION['tel'] = $tel;
+$_SESSION['email'] = $email;
+$_SESSION['body'] = $body;
+$_SESSION['form_step'] = 'confirm';
+    // 次のページへリダイレクトする
+header('Location: confirm.php');
+exit();
+}
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -168,17 +148,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </button>
                         </dd>
                         <dd>
-                            <button name="facebook">
+                        <button name="facebook">
                                 <img src="./cafe/img/fb.png">
                             </button>
                         </dd>
                         <dd>
-                            <button name="google">
+                        <button name="google">
                                 <img src="./cafe/img/google.png">
                             </button>
                         </dd>
                         <dd>
-                            <button name="apple">
+                        <button name="apple">
                                 <img src="./cafe/img/apple.png">
                             </button>
                         </dd>
@@ -189,14 +169,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section>
         <div class="inquiry_box">
             <h2>お問い合わせ</h2>
-            <form method="post" action="" id="contact">
+            <form method="post" action="update.php" id="contact">
                 <h3>下記の項目をご記入の上送信ボタンを押してください</h3>
-                <p>送信頂いた件につきましては、当社より折り返しご連絡を差し上げます。</p>
-                <p>なお、ご連絡までに、お時間を頂く場合もございますので予めご了承ください。</p>
+                <p>編集が必要な部分のみ編集してください。</p>
                 <p>
                     <span class="required">*</span>
                     は必須項目となります。
                 </p>
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($result['id']); ?>">
                 <dl>
                     <dt>
                         <label for="name">氏名</label>
@@ -209,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="name" id="name" placeholder="山田太郎" value="<?php echo isset($_SESSION['formData']['name']) ? htmlspecialchars($_SESSION['formData']['name']) : ''; ?>">
+                        <input type="text" name="name" id="name" placeholder="山田太郎" value="<?php echo htmlspecialchars($result['name']); ?>">
                     </dd>
                     <dt>
                         <label for="kana">フリガナ</label>
@@ -222,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="kana" id="kana" placeholder="ヤマダタロウ" value="<?php echo isset($_SESSION['formData']['kana']) ? htmlspecialchars($_SESSION['formData']['kana']) : ''; ?>">
+                        <input type="text" name="kana" id="kana" placeholder="ヤマダタロウ" value="<?php echo htmlspecialchars($result['kana']); ?>">
                     </dd>
                     <dt>
                         <label for="tel">電話番号</label>
@@ -234,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="tel" id="tel" placeholder="09012345678" value="<?php echo isset($_SESSION['formData']['tel']) ? htmlspecialchars($_SESSION['formData']['tel']) : ''; ?>">
+                        <input type="text" name="tel" id="tel" placeholder="09012345678" value="<?php echo htmlspecialchars($result['tel']); ?>">
                     </dd>
                     <dt>
                         <label for="email">メールアドレス</label>
@@ -247,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php endif; ?>    
                     </dt>
                     <dd>
-                        <input type="text" name="email" id="email" placeholder="test@test.co.jp" value="<?php echo isset($_SESSION['formData']['email']) ? htmlspecialchars($_SESSION['formData']['email']) : ''; ?>">
+                        <input type="text" name="email" id="email" placeholder="test@test.co.jp" value="<?php echo htmlspecialchars($result['email']); ?>">
                     </dd>
                 </dl>
                 <h3>
@@ -261,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php endif; ?>
                 <dl>
                 <dd>
-                    <textarea name="body" id="body"><?php echo isset($_SESSION['formData']['body']) ? htmlspecialchars($_SESSION['formData']['body']) : ''; ?></textarea>
+                    <textarea name="body" id="body"><?php echo htmlspecialchars($result['body']); ?></textarea>
                 </dd>
 
                 <div class="next">
@@ -319,47 +299,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         } else {
                             document.querySelector('.error-body').style.display = 'none';
                         }
-
-
                 });
             </script>
         </div>
     </section>
-    <div class="table">
-        <table border="1">
-            <tr>
-                <th>id</th>
-                <th>名前</th>
-                <th>カナ</th>
-                <th>電話番号</th>
-                <th>メールアドレス</th>
-                <th>内容</th>
-                <th></th>
-                <th></th>
-            </tr>
-            <?php if (!empty($results)): ?>
-            <?php foreach ($results as $row): ?> <!-- ここでループを開始 -->
-             <tr>
-                <td><?php echo htmlspecialchars($row['id']); ?></td>
-                <td><?php echo htmlspecialchars($row['name']); ?></td>
-                <td><?php echo htmlspecialchars($row['kana']); ?></td>
-                <td><?php echo htmlspecialchars($row['tel']); ?></td>
-                <td><?php echo htmlspecialchars($row['email']); ?></td>
-                <td><?php echo htmlspecialchars($row['body']); ?></td>
-                <td>
-                    <!-- 編集ボタン -->
-                    <a href="edit.php?id=<?php echo $row['id']; ?>">編集</a>
-                </td> 
-                <td>
-                    <!--削除ボタン-->
-                    <a href="delete.php?id=<?php echo $row['id']; ?>">削除</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-            <?php endif; ?>
-        </table>
-    </div>
-    
     <footer>
         <div class="out">
             <div class="Company_nav">
@@ -456,4 +399,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </footer>
 </body>
-</html>

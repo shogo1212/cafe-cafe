@@ -20,7 +20,7 @@ ul, ol, li, dl, dt, dd, img, form, table, tr, th, td {
 	box-sizing: border-box;
 }
 body {
-    font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+    font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'MS Ｐゴシック',sans-serif;
 }
 .corona {
     top: 0;
@@ -89,7 +89,7 @@ header nav a {
     font-weight: bold;
     font-size: 32px;
     flex: 25%;
-}
+}border
 .top_menu {
     flex: 50%;
     display: flex;

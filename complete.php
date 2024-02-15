@@ -1,21 +1,37 @@
 <?php
 session_start();
-$_SESSION['form_step'] = 'complete';
-// 全てのセッション変数をクリアする
-session_unset();
-// セッション自体を破棄する
-session_destroy();
 
-// リファラURLを取得
-$referrer = $_SERVER['HTTP_REFERER'] ?? '';
-
-// リファラURLに基づいて条件をチェック
-if (!str_contains($referrer, 'confirm.php')) {
-    // リダイレクト
-    header('Location: contact.php');
+if (!isset($_SESSION['formData'])) {
+    // フォームデータが存在しない場合は、contact.php へリダイレクト
+    header("Location: contact.php");
     exit();
 }
-?>      
+
+require 'dbconnect.php'; // データベース接続
+
+$formData = $_SESSION['formData'];
+
+// データ挿入のSQL文を準備
+$sql = "INSERT INTO contacts (name, kana, tel, email, body) VALUES (:name, :kana, :tel, :email, :body)";
+$stmt = $pdo->prepare($sql);
+
+// パラメータをバインドし、SQL文を実行
+$stmt->execute([
+    ':name' => $formData['name'],
+    ':kana' => $formData['kana'],
+    ':tel' => $formData['tel'],
+    ':email' => $formData['email'],
+    ':body' => $formData['body'],
+]);
+
+unset($stmt);
+
+// 全てのセッション変数をクリアし、セッションを破棄
+session_unset();
+session_destroy();
+
+?>
+    
 <!DOCTYPE html>
 <html>
 <head>
