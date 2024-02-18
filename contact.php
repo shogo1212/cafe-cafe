@@ -352,7 +352,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </td> 
                 <td>
                     <!--削除ボタン-->
-                    <a href="delete.php?id=<?php echo $row['id']; ?>">削除</a>
+                    <a href="delete.php?id=<?php echo $row['id']; ?>" onclick="return confirm('削除してもよろしいでしょうか？');">削除</a>
                 </td>
             </tr>
             <?php endforeach; ?>
