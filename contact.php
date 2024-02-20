@@ -8,6 +8,12 @@
         // セッション変数をクリアする
         unset($_SESSION['formData']);
     }
+
+    if (isset($_GET['reset']) && $_GET['reset'] == 1) {
+        // セッション変数をクリアする
+        unset($_SESSION['formData']);
+    }
+
     // エラーメッセージ用の変数を初期化
     $errorMessages = [];
 
@@ -28,10 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST
     //フリガナチェック
     if (empty($kana) || mb_strlen($kana) > 10) {
         $errorMessages['kana'] = 'フリガナは必須入力です。フリガナは10文字以内で入力してください。';
-    } 
-    //電話番号チェック
-    if (empty($tel) || !preg_match('/^[0-9]+$/', $tel)) {
-        $errorMessages['tel'] = '電話番号は0-9の数字のみで入力してください。';
     } 
     // メールアドレスチェック
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -60,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!isset($_POST['action']) || $_POST
     require 'dbconnect.php';
 
     // すべてのレコードを取得
-    $sql = "SELECT id, name, kana, tel, email, body FROM contacts ORDER BY id DESC";
+    $sql = "SELECT * FROM contacts ORDER BY id ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //データ取得
-    $id = $_POST['id'];
+    $id = isset($_POST['id']) ? $_POST['id'] : null;
     $name = $_POST['name'];
     $kana = $_POST['kana'];
     $tel = $_POST['tel'];
@@ -127,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <a href="index.php#cafe">体験</a>
                 </div>
                 <div class="inquiry">
-                    <a href="contact.php">お問い合わせ</a>
+                    <a href="contact.php?reset=1">お問い合わせ</a>
                 </div>
             </div>
             <div class="sign"><!--サインイン-->
@@ -145,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a href="index.php#cafe">体験</a>
                     </div>
                     <div class="side_first">
-                        <a href="contact.php">お問い合わせ</a>
+                        <a href="contact.php?reset=1">お問い合わせ</a>
                     </div>
                 </div>
             </div>
@@ -227,12 +229,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <dt>
                         <label for="tel">電話番号</label>
                     </dt>
-                    <dt>
-                        <!-- エラーメッセージを表示 -->
-                        <?php if (!empty($errorMessages["tel"])): ?>
-                            <div class="error"><?php echo $errorMessages["tel"]; ?></div>
-                        <?php endif; ?>    
-                    </dt>
                     <dd>
                         <input type="text" name="tel" id="tel" placeholder="09012345678" value="<?php echo isset($_SESSION['formData']['tel']) ? htmlspecialchars($_SESSION['formData']['tel']) : ''; ?>">
                     </dd>
@@ -269,6 +265,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <form action="complete.php" method="post" class="next">
                                     <input type="submit" name="front" value="送信">
                         </form>
+                    </div>
+                </div>
+            
             <script>
                 document.getElementById('contact').addEventListener('submit', function(event) {
                     let name = document.getElementById('name').value;
@@ -277,11 +276,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     let email = document.getElementById('email').value;
                     let body = document.getElementById('body').value;
                     
-                    if (name === "" || kana === "" || tel === "" || email === "" || body === "") {
-                        event.preventDefault(); // フォームの送信を阻止
-                        alert('氏名は必須入力です。10文字以内でご入力ください。\nフリガナは必須入力です。10文字以内でご入力ください。\n電話番号は0-9の数字のみでご入力ください。\nメールアドレスは正しくご入力ください。\nお問い合わせ内容は必須入力です。');;
+                    if (name === "") {
+                        alert('氏名は必須入力です。10文字以内でご入力ください。');;
                     }
-                 
+                    if (kana === "") {
+                        alert('フリガナは必須入力です。10文字以内でご入力ください。');
+                    }
+                    if ( email === ""){
+                        alert('メールアドレスは正しくご入力ください。');
+                    }
+                    if (body === "") {
+                        ('お問い合わせ内容は必須入力です。');
+                    }
                     
                     if (!name || name.length > 10) {
                             document.querySelector('.error-name').style.display = 'block'; // 個別のエラー要素
@@ -295,14 +301,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             isValid = false;
                         } else {
                             document.querySelector('.error-kana').style.display = 'none';
-                        }
-
-                        const telPattern = /^[0-9]+$/;
-                        if (!tel || !telPattern.test(tel)) {
-                            document.querySelector('.error-tel').style.display = 'block';
-                            isValid = false;
-                        } else {
-                            document.querySelector('.error-tel').style.display = 'none';
                         }
 
                         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -323,19 +321,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 });
             </script>
+
         </div>
     </section>
-    <div class="table">
-        <table border="1">
+<section>
+    <div >
+        <table class="table" border="1">
             <tr>
-                <th>id</th>
-                <th>名前</th>
-                <th>カナ</th>
-                <th>電話番号</th>
-                <th>メールアドレス</th>
-                <th>内容</th>
-                <th></th>
-                <th></th>
+                <th class="id-column">ID</th>
+                <th class="name-column">名前</th>
+                <th class="kana-column">カナ</th>
+                <th class="tel-column">電話番号</th>
+                <th class="email-column">メールアドレス</th>
+                <th class="body-column">内容</th>
+                <th class="edit-column"></th>
+                <th class="delete-column"></th>
             </tr>
             <?php if (!empty($results)): ?>
             <?php foreach ($results as $row): ?> <!-- ここでループを開始 -->
@@ -359,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
         </table>
     </div>
-    
+</section>
     <footer>
         <div class="out">
             <div class="Company_nav">

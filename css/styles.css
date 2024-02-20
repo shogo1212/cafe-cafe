@@ -207,11 +207,11 @@ section {
     text-decoration: underline;
 }
 .table {
-    font-size: 0.9rem;
     width: 80%;
     border-collapse: collapse;
     margin-left: 10%;
     padding-bottom: 20px;
+    font-size: 13px;
   }
   tr th {
     border: solid 1px black;
@@ -229,6 +229,15 @@ table tr td{
     display: block;
     margin-bottom: 20px;
 }
+.id-column { width: 5%; }
+.name-column { width: 12%; }
+.kana-column { width: 12%; }
+.tel-column { width: 10%; }
+.email-column { width: 20%; }
+.body-column { width: 25%; }
+.edit-column { width: 8%; }
+.delete-column { width: 8%; }
+
 footer {
     border-top: 1px solid #ddd;
     background-color: #f7f7f7;
@@ -307,7 +316,6 @@ footer .supplement {
     .inquiry_box {
         width: 90%;
     }
-    
     }
     
     @media screen and (max-width: 700px) {
@@ -321,7 +329,10 @@ footer .supplement {
     footer .list h2 {
         border-bottom: 1px solid #ccc;
     }
-    
+    tbody td {
+        padding: 8px;
+        font-size: 13px;
+      }
     }
     
     @media screen and (max-width: 480px) {
@@ -341,3 +352,4 @@ footer .supplement {
     }
     
     }
+   

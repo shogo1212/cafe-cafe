@@ -38,7 +38,7 @@ if (!str_contains($referrer, 'contact.php')) {
                     <a href="index.php#cafe">体験</a>
                 </div>
                 <div class="inquiry">
-                    <a href="contact.php">お問い合わせ</a>
+                <a href="contact.php?reset=1">お問い合わせ</a>
                 </div>
             </div>
             <div class="sign"><!--サインイン-->
@@ -56,7 +56,7 @@ if (!str_contains($referrer, 'contact.php')) {
                         <a href="index.php#cafe">体験</a>
                     </div>
                     <div class="side_first">
-                        <a href="contact.php">お問い合わせ</a>
+                        <a href="contact.php?reset=1">お問い合わせ</a>
                     </div>
                 </div>
             </div>
